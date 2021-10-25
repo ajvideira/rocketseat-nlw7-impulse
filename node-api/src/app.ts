@@ -1,9 +1,10 @@
 import 'dotenv/config';
 import express, { Request, response, Response } from 'express';
+import { router } from './routes';
 
 const app = express();
-
-console.log(process.env.GITHUB_CLIENT_ID);
+app.use(express.json());
+app.use(router);
 
 app.get('/', (request: Request, response: Response) =>
   response.json({ status: true, message: 'Hello World' })
