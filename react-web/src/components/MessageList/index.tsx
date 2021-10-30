@@ -1,57 +1,44 @@
+import { useEffect, useState } from "react";
+
+import { api } from "../../services/api";
+import imgLogo from "../../assets/logo.png";
 import styles from "./styles.module.scss";
 
-import imgLogo from "../../assets/logo.png";
+type Message = {
+  id: string;
+  text: string;
+  user: {
+    name: string;
+    avatar_url: string;
+  };
+};
 
 export function MessageList() {
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await api.get<Message[]>("/messages/last-three");
+      setMessages(data);
+    })();
+  }),
+    [];
+
   return (
     <div className={styles.messageListWrapper}>
       <img src={imgLogo} alt="Do While 2021" />
       <ul>
-        <li>
-          <p className={styles.messageContent}>
-            Não vejo a hora de começar esse evento, com certeza vai ser o melhor
-            de todos os tempos, vamooo pra cima! 🔥🔥
-          </p>
-          <div className={styles.messageUser}>
-            <div>
-              <img
-                src="https://github.com/ajvideira.png"
-                alt="Jonathan Videira"
-              />
+        {messages.map((message) => (
+          <li>
+            <p>{message.text}</p>
+            <div className={styles.messageUser}>
+              <div>
+                <img src={message.user.avatar_url} alt={message.user.name} />
+              </div>
+              <span>{message.user.name}</span>
             </div>
-            <span>Jonathan Videira</span>
-          </div>
-        </li>
-        <li>
-          <p>
-            Não vejo a hora de começar esse evento, com certeza vai ser o melhor
-            de todos os tempos, vamooo pra cima! 🔥🔥
-          </p>
-          <div className={styles.messageUser}>
-            <div className={styles.userImage}>
-              <img
-                src="https://github.com/ajvideira.png"
-                alt="Jonathan Videira"
-              />
-            </div>
-            <span>Jonathan Videira</span>
-          </div>
-        </li>
-        <li>
-          <p>
-            Não vejo a hora de começar esse evento, com certeza vai ser o melhor
-            de todos os tempos, vamooo pra cima! 🔥🔥
-          </p>
-          <div className={styles.messageUser}>
-            <div className={styles.userImage}>
-              <img
-                src="https://github.com/ajvideira.png"
-                alt="Jonathan Videira"
-              />
-            </div>
-            <span>Jonathan Videira</span>
-          </div>
-        </li>
+          </li>
+        ))}
       </ul>
     </div>
   );
