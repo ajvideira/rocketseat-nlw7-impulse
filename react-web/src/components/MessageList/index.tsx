@@ -21,15 +21,14 @@ export function MessageList() {
       const { data } = await api.get<Message[]>("/messages/last-three");
       setMessages(data);
     })();
-  }),
-    [];
+  }, []);
 
   return (
     <div className={styles.messageListWrapper}>
       <img src={imgLogo} alt="Do While 2021" />
       <ul>
         {messages.map((message) => (
-          <li>
+          <li key={message.id}>
             <p>{message.text}</p>
             <div className={styles.messageUser}>
               <div>
