@@ -63,7 +63,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
           const { data } = await api.post<AuthResponse>("/authenticate", {
             code,
           });
+
           localStorage.setItem("@dowhile:token", data.token);
+          api.defaults.headers.common.authorization = `Bearer ${data.token}`;
+
           setUser(data.user);
         }
       }
