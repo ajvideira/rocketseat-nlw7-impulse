@@ -1,10 +1,13 @@
 import { FormEvent, useState } from "react";
 import { VscGithubInverted, VscSignOut } from "react-icons/vsc";
+import { toast } from "react-toastify";
 
 import { useAuth } from "../../contexts/AuthContext";
 import { api } from "../../services/api";
 
 import styles from "./styles.module.scss";
+
+import imgSeal from "../../assets/seal.svg";
 
 export function SendMessageForm() {
   const { user, signOut } = useAuth();
@@ -14,13 +17,19 @@ export function SendMessageForm() {
   async function handleSendMessage(event: FormEvent) {
     event.preventDefault();
 
+    if (!message) {
+      return;
+    }
+
     await api.post("/messages", { text: message });
 
     setMessage("");
+    toast.success("Mensagem enviada com sucesso!", { theme: "colored" });
   }
 
   return (
     <div className={styles.sendMessageFormWrapper}>
+      <img src={imgSeal} alt="Rocketseat" />
       <button onClick={signOut}>
         <VscSignOut size={32} />
       </button>

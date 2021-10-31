@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 import { api } from "../../services/api";
 import imgLogo from "../../assets/logo.png";
+
 import styles from "./styles.module.scss";
 
 type Message = {
@@ -13,6 +15,11 @@ type Message = {
   };
 };
 
+const socket = io("http://localhost:4000");
+const messageQueue: Message[] = [];
+
+socket.on("new_message", (data: Message) => messageQueue.push(data));
+
 export function MessageList() {
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -22,6 +29,15 @@ export function MessageList() {
       setMessages(data);
     })();
   }, []);
+
+  useEffect(() => {
+    setInterval(() => {
+      if (messageQueue.length > 0) {
+        const newMessage = messageQueue.shift() as Message;
+        setMessages((prev) => [newMessage, prev[0], prev[1]].filter(Boolean));
+      }
+    }, 3000);
+  });
 
   return (
     <div className={styles.messageListWrapper}>

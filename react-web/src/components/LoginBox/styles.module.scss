@@ -9,6 +9,14 @@
   flex-direction: column;
   text-align: center;
 
+  position: relative;
+
+  > img {
+    position: absolute;
+    top: 126px;
+    left: 96px;
+  }
+
   strong {
     display: block;
     font-size: 32px;
