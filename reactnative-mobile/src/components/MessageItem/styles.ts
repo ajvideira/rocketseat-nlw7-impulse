@@ -4,22 +4,24 @@ import { COLORS, FONTS } from "../../theme";
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
+    marginTop: 32,
   },
-
-  userPhotoLogout: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  logoutText: {
-    color: COLORS.WHITE,
+  text: {
+    color: COLORS.GRAY_TERTIARY,
     fontSize: 15,
     lineHeight: 24,
-    marginRight: 20,
     fontFamily: FONTS.REGULAR,
+  },
+  userInfo: {
+    marginTop: 12,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  userName: {
+    color: COLORS.GRAY_TERTIARY,
+    fontSize: 15,
+    lineHeight: 24,
+    fontFamily: FONTS.REGULAR,
+    marginLeft: 16,
   },
 });

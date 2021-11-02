@@ -10,12 +10,12 @@ import { styles } from "./styles";
 
 const SIZES = {
   SMALL: {
-    avatarSize: 24,
     containerSize: 32,
+    avatarSize: 28,
   },
   NORMAL: {
-    avatarSize: 40,
     containerSize: 48,
+    avatarSize: 42,
   },
 };
 

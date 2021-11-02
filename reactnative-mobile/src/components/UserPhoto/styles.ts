@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   },
   avatar: {
     borderRadius: 1000,
-    borderWidth: 4,
+    borderWidth: 3,
     borderColor: COLORS.BLACK_SECONDARY,
   },
 });
