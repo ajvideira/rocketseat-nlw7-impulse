@@ -9,6 +9,7 @@ import { styles } from "./styles";
 export function SendMessageForm() {
   const [isFormFocused, setIsFormFocused] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [message, setMessage] = useState("");
 
   function handlePressButton() {
     if (isFormFocused) {
@@ -16,6 +17,7 @@ export function SendMessageForm() {
       setTimeout(() => {
         setIsSending(false);
         setIsFormFocused(false);
+        setMessage("");
       }, 3000);
     } else {
       setIsFormFocused(true);
@@ -32,6 +34,10 @@ export function SendMessageForm() {
           placeholderTextColor={COLORS.GRAY_PRIMARY}
           autoFocus
           editable={!isSending}
+          keyboardAppearance="dark"
+          maxLength={140}
+          value={message}
+          onChangeText={setMessage}
         />
       )}
       <Button

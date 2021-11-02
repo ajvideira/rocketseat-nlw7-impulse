@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.BLACK_TERTIARY,
   },
   input: {
-    height: 100,
+    height: 84,
     width: "100%",
     textAlignVertical: "top",
     color: COLORS.WHITE,
