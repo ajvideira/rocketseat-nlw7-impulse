@@ -9,9 +9,16 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
+
+  userPhotoLogout: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
   logoutText: {
     color: COLORS.WHITE,
     fontSize: 15,
     lineHeight: 24,
+    marginRight: 20,
   },
 });
