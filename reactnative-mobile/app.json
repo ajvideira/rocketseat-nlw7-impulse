@@ -10,6 +10,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#121214"
     },
+    "scheme": "reactnative-mobile",
     "updates": {
       "fallbackToCacheTimeout": 0
     },

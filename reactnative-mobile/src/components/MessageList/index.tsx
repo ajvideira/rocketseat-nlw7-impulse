@@ -1,20 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { ScrollView, View } from "react-native";
 import { Message } from "../../models/message";
+import { api } from "../../services/api";
 import { MessageItem } from "../MessageItem";
 
 import { styles } from "./styles";
 
+import { io } from "socket.io-client";
+
+const messageQueue: Message[] = [];
+
+const socket = io(String(api.defaults.baseURL));
+socket.on("new_message", (newMessage: Message) => {
+  messageQueue.push(newMessage);
+});
+
 export function MessageList() {
-  const message: Message = {
-    id: "1",
-    text: "Teste",
-    user: {
-      name: "Jonathan Alba",
-      avatar_url: "https://github.com/ajvideira.png",
-    },
-  };
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const { data: newMessages } = await api.get<Message[]>(
+        "/messages/last-three"
+      );
+      setMessages(newMessages);
+    })();
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (messageQueue.length > 0) {
+        const newMessage = messageQueue.shift() as Message;
+        setMessages((prev) => [newMessage, prev[0], prev[1]].filter(Boolean));
+      }
+    }, 3000);
+
+    return () => clearInterval(timer);
+  });
 
   return (
     <ScrollView
@@ -22,36 +45,9 @@ export function MessageList() {
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="never"
     >
-      <MessageItem
-        data={{
-          id: "1",
-          text: "Não vejo a hora de começar esse evento, com certeza vai ser o melhor de todos os tempos, vamooo pra cima! 🔥🔥",
-          user: {
-            name: "Jonathan Alba",
-            avatar_url: "https://github.com/ajvideira.png",
-          },
-        }}
-      />
-      <MessageItem
-        data={{
-          id: "1",
-          text: "Esse vai ser simplesmente fantástico! Bora aprender tudo em relação a montagem de APIs GraphQL. Sem contar com as palestras e painéis.",
-          user: {
-            name: "Jonathan Alba",
-            avatar_url: "https://github.com/ajvideira.png",
-          },
-        }}
-      />
-      <MessageItem
-        data={{
-          id: "1",
-          text: "Sem dúvida as palestras vão ser úteis para a minha carreira e para a de muitos 😍 #gorocket",
-          user: {
-            name: "Jonathan Alba",
-            avatar_url: "https://github.com/ajvideira.png",
-          },
-        }}
-      />
+      {messages.map((message) => (
+        <MessageItem key={message.id} data={message} />
+      ))}
     </ScrollView>
   );
 }

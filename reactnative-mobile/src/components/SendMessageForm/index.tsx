@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
-import { TextInput, View } from "react-native";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  TextInput,
+  View,
+} from "react-native";
+import { api } from "../../services/api";
 import { COLORS } from "../../theme";
 import { Button } from "../Button";
 
@@ -11,21 +18,27 @@ export function SendMessageForm() {
   const [isSending, setIsSending] = useState(false);
   const [message, setMessage] = useState("");
 
-  function handlePressButton() {
+  async function handlePressButton() {
     if (isFormFocused) {
       setIsSending(true);
-      setTimeout(() => {
-        setIsSending(false);
-        setIsFormFocused(false);
+      if (message.trim().length > 0) {
+        await api.post("/messages", { text: message.trim() });
+        Alert.alert("Mensagem enviada!");
         setMessage("");
-      }, 3000);
+      } else {
+        Alert.alert("Erro", "A mensagem não pode ficar em branco.");
+      }
+      setIsSending(false);
     } else {
       setIsFormFocused(true);
     }
   }
 
   return (
-    <View style={[styles.container, isFormFocused && styles.containerFocused]}>
+    <KeyboardAvoidingView
+      style={[styles.container, isFormFocused && styles.containerFocused]}
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+    >
       {isFormFocused && (
         <TextInput
           style={styles.input}
@@ -48,6 +61,6 @@ export function SendMessageForm() {
         disabled={isSending}
         isLoading={isSending}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
